@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  seed     = "ts-node -r tsconfig-paths/register prisma/seed.ts"
 }
 
 datasource db {
