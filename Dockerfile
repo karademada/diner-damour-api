@@ -33,9 +33,10 @@ RUN npm ci --only=production
 COPY prisma/schema.prisma ./prisma/
 COPY prisma/migrations ./prisma/migrations/
 
-# Copy built app and JS seed script from builder stage
+# Copy built app, JS seed script, and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/src/infrastructure/i18n/locales ./src/infrastructure/i18n/locales
 
 # Expose port
 EXPOSE 3000
