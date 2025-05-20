@@ -28,12 +28,28 @@ COPY package*.json ./
 # Install production dependencies only
 RUN npm ci --only=production
 
-# Copy Prisma schema
+# Copy Prisma schema and seed script
 COPY prisma ./prisma/
 
 # Copy built app from builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+# Copy ts-node and tsconfig-paths for running seed script
+COPY --from=builder /app/node_modules/ts-node ./node_modules/ts-node
+COPY --from=builder /app/node_modules/tsconfig-paths ./node_modules/tsconfig-paths
+COPY --from=builder /app/node_modules/typescript ./node_modules/typescript
+COPY --from=builder /app/node_modules/@types ./node_modules/@types
+COPY --from=builder /app/node_modules/yn ./node_modules/yn
+COPY --from=builder /app/node_modules/v8-compile-cache-lib ./node_modules/v8-compile-cache-lib
+COPY --from=builder /app/node_modules/make-error ./node_modules/make-error
+COPY --from=builder /app/node_modules/arg ./node_modules/arg
+COPY --from=builder /app/node_modules/create-require ./node_modules/create-require
+COPY --from=builder /app/node_modules/diff ./node_modules/diff
+COPY --from=builder /app/node_modules/acorn-walk ./node_modules/acorn-walk
+COPY --from=builder /app/node_modules/acorn ./node_modules/acorn
+COPY --from=builder /app/node_modules/json5 ./node_modules/json5
+COPY --from=builder /app/node_modules/minimist ./node_modules/minimist
+COPY --from=builder /app/node_modules/strip-bom ./node_modules/strip-bom
 
 # Expose port
 EXPOSE 3000
@@ -42,4 +58,4 @@ EXPOSE 3000
 ENV NODE_ENV=production
 
 # Run migrations and start the app
-CMD ["/bin/sh", "-c", "npx prisma migrate deploy && npm run db:seed && node dist/src/main.js"]
+CMD ["/bin/sh", "-c", "npx prisma migrate deploy && npx ts-node -r tsconfig-paths/register prisma/seed.ts && node dist/src/main.js"]
