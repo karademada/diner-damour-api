@@ -27,13 +27,28 @@ export class S3StorageProvider implements IStorageProvider {
     this.publicBucket = awsConfig.publicBucket;
     this.privateBucket = awsConfig.privateBucket;
 
+    // Check if we're using a custom endpoint (like Supabase)
+    const endpoint = this.configService.get('storage.publicUrl');
+    const isCustomEndpoint = endpoint && !endpoint.includes('amazonaws.com');
+
     this.s3Client = new S3Client({
       region: awsConfig.region,
       credentials: {
         accessKeyId: awsConfig.accessKeyId,
         secretAccessKey: awsConfig.secretAccessKey,
       },
+      ...(isCustomEndpoint && {
+        endpoint: endpoint,
+        forcePathStyle: true, // Needed for non-AWS S3 implementations
+      }),
     });
+
+    console.log('S3 Client Configuration:');
+    console.log('Region:', awsConfig.region);
+    console.log('Public Bucket:', this.publicBucket);
+    console.log('Private Bucket:', this.privateBucket);
+    console.log('Using Custom Endpoint:', isCustomEndpoint);
+    console.log('Endpoint:', isCustomEndpoint ? endpoint : 'AWS Default');
   }
 
   async upload(file: IStorageFile, userId?: string): Promise<File> {
@@ -48,6 +63,16 @@ export class S3StorageProvider implements IStorageProvider {
       Body: file.buffer,
       ContentType: file.mimetype,
     };
+
+    console.log('Uploading file to S3:', params);
+    console.log('File buffer size:', file.buffer.length);
+    console.log('File size:', file.size);
+    console.log('File path:', filePath);
+    console.log('Bucket:', bucket);
+    console.log('User ID:', userId);
+    console.log('Is public:', isPublic);
+    console.log('File name:', filename);
+    console.log('File original name:', file.originalname);
 
     await this.s3Client.send(new PutObjectCommand(params));
 
