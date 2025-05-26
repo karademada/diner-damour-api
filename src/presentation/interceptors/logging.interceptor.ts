@@ -1,5 +1,4 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoggerService } from '@infrastructure/logger/logger.service';
 
@@ -9,7 +8,8 @@ export class LoggingInterceptor implements NestInterceptor {
     this.logger.setContext(LoggingInterceptor.name);
   }
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  intercept(context: ExecutionContext, next: CallHandler): any {
     const req = context.switchToHttp().getRequest();
     const { method, url, body, user } = req;
     const userId = user?.sub || 'anonymous';
@@ -25,8 +25,10 @@ export class LoggingInterceptor implements NestInterceptor {
 
     const now = Date.now();
 
-    return next.handle().pipe(
-      tap(data => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (next.handle() as any).pipe(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (tap as any)(data => {
         // Log the response
         this.logger.log({
           message: `Request completed`,

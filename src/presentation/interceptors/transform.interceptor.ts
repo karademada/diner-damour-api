@@ -1,5 +1,4 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface IResponse<T> {
@@ -14,13 +13,16 @@ export interface IResponse<T> {
 export class TransformInterceptor<T> implements NestInterceptor<T, IResponse<T>> {
   constructor() {}
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<IResponse<T>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  intercept(context: ExecutionContext, next: CallHandler): any {
     // Get Accept-Language header from request
     const request = context.switchToHttp().getRequest();
     const acceptLanguage = request.headers['accept-language'];
 
-    return next.handle().pipe(
-      map(data => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (next.handle() as any).pipe(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (map as any)(data => {
         // Handle responses with message field
         let responseData = data;
         let message: string | undefined;

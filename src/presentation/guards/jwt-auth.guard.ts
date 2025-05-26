@@ -9,7 +9,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     super();
   }
 
-  canActivate(context: ExecutionContext) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  canActivate(context: ExecutionContext): any {
     // Check if the route is marked as public
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),

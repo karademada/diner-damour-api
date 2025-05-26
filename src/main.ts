@@ -27,8 +27,8 @@ async function bootstrap() {
   const exceptionLogger = await app.resolve(LoggerService);
   app.useGlobalFilters(new AllExceptionsFilter(exceptionLogger));
 
-  // Enable CORS
-  app.enableCors();
+  // Enable CORS with configuration
+  app.enableCors(configService.get('cors'));
 
   // API prefix
   app.setGlobalPrefix('api');
