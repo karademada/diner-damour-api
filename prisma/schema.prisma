@@ -29,6 +29,8 @@ model User {
   refreshTokens RefreshToken[]
   passwordResets PasswordReset[]
   files         File[]
+  profile       Profile?
+  preferences   Preferences?
 }
 
 model Role {
@@ -137,4 +139,81 @@ model File {
   user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([userId])
+}
+
+model Profile {
+  id                 String            @id @default(uuid())
+  userId             String            @unique
+  bio                String?
+  dateOfBirth        DateTime?
+  gender             Gender?
+  height             Int?              // in centimeters
+  weight             Int?              // in kilograms
+  location           String?
+  occupation         String?
+  education          String?
+  relationshipStatus RelationshipStatus?
+  interests          String[]
+  photos             String[]          // Array of photo URLs/IDs
+  isVisible          Boolean           @default(true)
+  isComplete         Boolean           @default(false)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([location])
+  @@index([isVisible])
+  @@index([isComplete])
+}
+
+model Preferences {
+  id                        String        @id @default(uuid())
+  userId                    String        @unique
+  preferredGenders          Gender[]
+  minAge                    Int           @default(18)
+  maxAge                    Int           @default(99)
+  maxDistance               Int           @default(50)
+  distanceUnit              DistanceUnit  @default(KILOMETERS)
+  preferredInterests        String[]
+  dealBreakers              String[]
+  showOnlyVerifiedProfiles  Boolean       @default(false)
+  showOnlyWithPhotos        Boolean       @default(true)
+  allowMessagesFromMatches  Boolean       @default(true)
+  allowMessagesFromEveryone Boolean       @default(false)
+  showOnlineStatus          Boolean       @default(true)
+  showLastSeen              Boolean       @default(true)
+  pushNotifications         Boolean       @default(true)
+  emailNotifications        Boolean       @default(true)
+  matchNotifications        Boolean       @default(true)
+  messageNotifications      Boolean       @default(true)
+  likeNotifications         Boolean       @default(true)
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+
+  user                      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+  PREFER_NOT_TO_SAY
+}
+
+enum RelationshipStatus {
+  SINGLE
+  IN_RELATIONSHIP
+  MARRIED
+  DIVORCED
+  WIDOWED
+  COMPLICATED
+}
+
+enum DistanceUnit {
+  KILOMETERS
+  MILES
 }

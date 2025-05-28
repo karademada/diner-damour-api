@@ -13,6 +13,8 @@ import { UserModule } from '@presentation/modules/user/user.module';
 import { RoleModule } from '@presentation/modules/role/role.module';
 import { AdminModule } from '@presentation/modules/admin/admin.module';
 import { StorageModule } from '@presentation/modules/storage/storage.module';
+import { ProfileModule } from '@presentation/modules/profile/profile.module';
+import { PreferencesModule } from '@presentation/modules/preferences/preferences.module';
 
 // Global providers
 import { LoggingInterceptor } from '@presentation/interceptors/logging.interceptor';
@@ -54,6 +56,8 @@ import configuration from '@infrastructure/config/configuration';
     RoleModule,
     AdminModule,
     StorageModule,
+    ProfileModule,
+    PreferencesModule,
   ],
   providers: [
     // Global interceptors

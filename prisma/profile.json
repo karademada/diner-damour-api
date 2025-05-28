@@ -1,0 +1,45 @@
+{
+   "user_id":"8149a743-da05-4e95-a343-618446afaf9f",
+   "preferred_age_min":30,
+   "preferred_age_max":45,
+   "preferred_country":"France",
+   "preferred_religiosity":"practicing",
+   "wants_hijab":true,
+   "requires_wali":true,
+   "preferred_languages":[
+      "French",
+      "Arabic"
+   ],
+   "preferred_education_level":"Bachelors",
+   "preferred_professions":[
+      "Teacher",
+      "Engineer",
+      "Health Professional"
+   ],
+   "preferred_ethnic_background":"Maghreb",
+   "preferred_personality":[
+      "ISFJ",
+      "INFJ",
+      "ENFP"
+   ],
+   "accepts_divorced":true,
+   "preferred_lifestyle":{
+      "eats_organic":true,
+      "ecology_conscious":true
+   },
+   "preferred_hobbies":[
+      "Art",
+      "Architecture",
+      "Calligraphy",
+      "Martial Arts",
+      "Skateboarding"
+   ],
+   "preferred_social_engagement":{
+      "requires_volunteering":true,
+      "preferred_areas":[
+         "solidarité locale",
+         "entraide",
+         "aide aux démunis"
+      ]
+   }
+}

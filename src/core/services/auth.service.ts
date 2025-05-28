@@ -346,6 +346,7 @@ export class AuthService {
    * @param _email The email to check
    * @returns Boolean indicating if the email is verified
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async isEmailVerified(email: string): Promise<boolean> {
     /*try {
       // Validate email format

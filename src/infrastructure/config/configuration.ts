@@ -9,7 +9,8 @@ export default () => ({
     methods: process.env.CORS_METHODS || 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: process.env.CORS_CREDENTIALS === 'true',
     preflightContinue: process.env.CORS_PREFLIGHT === 'true',
-    allowedHeaders: process.env.CORS_ALLOWED_HEADERS || 'Content-Type,Authorization,Accept,Accept-Language',
+    allowedHeaders:
+      process.env.CORS_ALLOWED_HEADERS || 'Content-Type,Authorization,Accept,Accept-Language',
     exposedHeaders: process.env.CORS_EXPOSED_HEADERS || 'Content-Length,Content-Range',
     maxAge: parseInt(process.env.CORS_MAX_AGE, 10) || 3600,
   },
