@@ -27,7 +27,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install production dependencies only
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy Prisma schema (no need for seed.ts as we'll use the JS version)
 COPY prisma/schema.prisma ./prisma/
