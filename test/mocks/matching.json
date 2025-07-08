@@ -1,0 +1,60 @@
+[
+  {
+    "profile": {
+      "full_name": "Khadija Oumari",
+      "gender": "female",
+      "birthdate": "1995-09-30",
+      "bio": "Salam, Khadija, 29 ans, étudiante en master de psychologie à Lille. Modérément pratiquante, j'aime l'équilibre entre spiritualité et modernité. Je cherche quelqu'un de compréhensif et ouvert d'esprit.",
+      "profile_picture_url": "http://localhost:4000/uploads/user-6/profile.jpeg",
+      "address": "20, Rue Nationale, Lille, France",
+      "city": "Lille",
+      "country": "France",
+      "coordinates": [
+        50.6292,
+        3.0573
+      ],
+      "job_title": "Étudiante",
+      "profession": "Étudiante en psychologie",
+      "education_level": "MASTERS",
+      "income_level": null,
+      "languages_spoken": [
+        "French",
+        "English"
+      ],
+      "hobbies": [
+        "Psychology",
+        "Reading",
+        "Cinema",
+        "Art",
+        "Yoga"
+      ],
+      "personality_type": "ENFP",
+      "ethnic_background": "Maghreb",
+      "marital_status": "single",
+      "religion": "muslim",
+      "religiosity_level": "moderate",
+      "madhhab": "maliki",
+      "hijab_observance": false,
+      "prayer_regular": false,
+      "halal_only": true,
+      "wants_wali_present": false,
+      "lifestyle_data": {
+        "eats_organic": true,
+        "ecology_conscious": true
+      },
+      "social_engagement": {
+        "does_volunteering": true,
+        "volunteering_areas": [
+          "soutien psychologique",
+          "aide étudiante"
+        ]
+      },
+      "id": "343aec43-a8a8-4db6-9ac2-6868ccb32f63",
+      "user_id": "25f4cd9d-4122-4d45-bd99-75b6783972bb",
+      "text_embedding_input": null,
+      "created_at": "2025-06-18T18:00:46.582721Z",
+      "updated_at": null
+    },
+    "compatibility_score": 0.6155769230769231
+  }
+]
