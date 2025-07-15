@@ -2,11 +2,14 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy package.json and pnpm-lock.yaml
+COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the app
 COPY . .
@@ -15,7 +18,7 @@ COPY . .
 RUN npx prisma generate
 
 # Build the app and compile seed script to JavaScript
-RUN npm run build && \
+RUN pnpm run build && \
     npx tsc prisma/seed.ts --outDir dist/prisma --esModuleInterop --skipLibCheck
 
 # Production stage
@@ -23,11 +26,14 @@ FROM node:18-alpine AS production
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy package.json and pnpm-lock.yaml
+COPY package.json pnpm-lock.yaml ./
 
 # Install production dependencies only
-RUN npm ci --omit=dev
+RUN pnpm install --frozen-lockfile --prod
 
 # Copy Prisma schema (no need for seed.ts as we'll use the JS version)
 COPY prisma/schema.prisma ./prisma/
