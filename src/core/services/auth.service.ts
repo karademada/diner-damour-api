@@ -348,7 +348,7 @@ export class AuthService {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async isEmailVerified(email: string): Promise<boolean> {
-    /*try {
+    try {
       // Validate email format
       new Email(email);
 
@@ -362,9 +362,7 @@ export class AuthService {
       }
 
       return false;
-    }*/
-    // eslint-disable-next-line prettier/prettier
-   return true; // TODO: Implement email verification check
+    }
   }
 
   /**

@@ -15,6 +15,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Generate Prisma client
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 RUN npx prisma generate
 
 # Build the app and compile seed script to JavaScript

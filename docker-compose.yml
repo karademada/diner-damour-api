@@ -60,38 +60,38 @@ services:
       - nestjs-network
 
   # Uncomment if you want to run the app in docker
-  # api:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: nestjs-template-api
-  #   restart: always
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - postgres
-  #     - mailhog
-  #     - minio
-  #   environment:
-  #     - NODE_ENV=development
-  #     - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/nestjs_template?schema=public
-  #     - SMTP_HOST=mailhog
-  #     - SMTP_PORT=1025
-  #     - SMTP_USER=
-  #     - SMTP_PASSWORD=
-  #     - SMTP_FROM=noreply@example.com
-  #     - SMTP_SECURE=false
-  #     - STORAGE_DRIVER=minio
-  #     - MINIO_ENDPOINT=minio
-  #     - MINIO_PORT=9000
-  #     - MINIO_ACCESS_KEY=minioadmin
-  #     - MINIO_SECRET_KEY=minioadmin
-  #     - MINIO_USE_SSL=false
-  #     - MINIO_PUBLIC_BUCKET=public
-  #     - MINIO_PRIVATE_BUCKET=private
-  #     - FILE_STORAGE_PUBLIC_URL=http://localhost:9000/public
-  #   networks:
-  #     - nestjs-network
+  api:
+     build:
+       context: .
+       dockerfile: Dockerfile
+     container_name: nestjs-template-api
+     restart: always
+     ports:
+       - "3000:3000"
+     depends_on:
+       - postgres
+       - mailhog
+       - minio
+     environment:
+       - NODE_ENV=development
+       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/nestjs_template?schema=public
+       - SMTP_HOST=mailhog
+       - SMTP_PORT=1025
+       - SMTP_USER=
+       - SMTP_PASSWORD=
+       - SMTP_FROM=noreply@example.com
+       - SMTP_SECURE=false
+       - STORAGE_DRIVER=minio
+       - MINIO_ENDPOINT=minio
+       - MINIO_PORT=9000
+       - MINIO_ACCESS_KEY=minioadmin
+       - MINIO_SECRET_KEY=minioadmin
+       - MINIO_USE_SSL=false
+       - MINIO_PUBLIC_BUCKET=public
+       - MINIO_PRIVATE_BUCKET=private
+       - FILE_STORAGE_PUBLIC_URL=http://localhost:9000/public
+     networks:
+       - nestjs-network
 
 volumes:
   postgres_data:
