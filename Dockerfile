@@ -8,9 +8,8 @@ RUN npm install -g pnpm
 # Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
 
-
-# Install dependencies (including production for .prisma)
-RUN pnpm install --frozen-lockfile && pnpm install --frozen-lockfile --prod
+# Install all dependencies (including dev dependencies for build)
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the app
 COPY . .
@@ -34,14 +33,11 @@ RUN npm install -g pnpm
 # Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
 
-
 # No need to install again, node_modules/.prisma will be copied from builder
 
 # Copy Prisma schema (no need for seed.ts as we'll use the JS version)
 COPY prisma/schema.prisma ./prisma/
 COPY prisma/migrations ./prisma/migrations/
-
-
 
 # Copy built app, JS seed script, and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist

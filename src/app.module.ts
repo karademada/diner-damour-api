@@ -26,6 +26,9 @@ import { JwtAuthGuard } from '@presentation/guards/jwt-auth.guard';
 // Config
 import configuration from '@infrastructure/config/configuration';
 
+// Controllers
+import { AppController } from './app.controller';
+
 @Module({
   imports: [
     // Global Config
@@ -59,6 +62,7 @@ import configuration from '@infrastructure/config/configuration';
     ProfileModule,
     PreferencesModule,
   ],
+  controllers: [AppController],
   providers: [
     // Global interceptors
     {
