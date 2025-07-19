@@ -40,6 +40,8 @@ RUN pnpm install --frozen-lockfile --prod
 COPY prisma/schema.prisma ./prisma/
 COPY prisma/migrations ./prisma/migrations/
 
+RUN ls -l /app/node_modules/.prisma
+
 # Copy built app, JS seed script, and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
