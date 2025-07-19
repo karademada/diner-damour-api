@@ -20,7 +20,7 @@ ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 RUN npx prisma generate
 
 # Build the app and compile seed script to JavaScript
-RUN pnpm run build
+RUN pnpm build
 RUN npx tsc prisma/seed.ts --outDir dist/prisma --esModuleInterop --skipLibCheck
 
 # Production stage
