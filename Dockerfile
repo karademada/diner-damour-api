@@ -33,15 +33,19 @@ RUN npm install -g pnpm
 # Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
 
-# No need to install again, node_modules/.prisma will be copied from builder
+# Install production dependencies only
+RUN pnpm install --frozen-lockfile --prod
 
-# Copy Prisma schema (no need for seed.ts as we'll use the JS version)
+# Copy Prisma schema and migrations
 COPY prisma/schema.prisma ./prisma/
 COPY prisma/migrations ./prisma/migrations/
 
+# Generate Prisma client in production stage
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+RUN npx prisma generate
+
 # Copy built app, JS seed script, and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/src/infrastructure/i18n/locales ./src/infrastructure/i18n/locales
 
 # Expose port
