@@ -47,12 +47,16 @@ RUN npx prisma generate
 # Copy built app, JS seed script, and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src/infrastructure/i18n/locales ./src/infrastructure/i18n/locales
+COPY --from=builder /app/node_modules ./node_modules
 
 # Expose port
 EXPOSE 3000
 
 # Set NODE_ENV to production
 ENV NODE_ENV=production
+
+# Install build dependencies
+RUN apk add --no-cache python3 make g++
 
 # Run migrations, compiled seed script, and start the app
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/prisma/seed.js && node dist/src/main.js"]
