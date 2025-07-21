@@ -64,6 +64,9 @@ describe('RegisterUserCommandHandler', () => {
       password: 'Password123!',
       firstName: 'New',
       lastName: 'User',
+      confirmPassword: 'Password123!',
+      acceptTerms: true,
+      receiveNotifications: true,
     });
 
     const createdUser = new User(
@@ -71,6 +74,8 @@ describe('RegisterUserCommandHandler', () => {
       'hashedPassword',
       new FirstName('New'),
       new LastName('User'),
+      true, // acceptTerms
+      true, // receiveNotifications
       '550e8400-e29b-41d4-a716-446655440000',
     );
 
@@ -104,6 +109,9 @@ describe('RegisterUserCommandHandler', () => {
       password: 'Password123!',
       firstName: 'Existing',
       lastName: 'User',
+      confirmPassword: 'Password123!',
+      acceptTerms: true,
+      receiveNotifications: true,
     });
 
     const error = new Error('Email already in use');

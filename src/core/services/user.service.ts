@@ -26,12 +26,19 @@ export class UserService {
     passwordStr: string,
     firstName: string,
     lastName: string,
+    acceptTerms: boolean,
+    receiveNotifications: boolean,
   ): Promise<User> {
     // Validate email using value object
     const email = new Email(emailStr);
 
     // Validate password using value object
     const password = new Password(passwordStr);
+
+    // Validate acceptTerms
+    if (!acceptTerms) {
+      throw new Error('Terms and conditions must be accepted');
+    }
 
     // Check if user already exists
     const existingUser = await this.userRepository.findByEmail(email.getValue());
@@ -42,8 +49,15 @@ export class UserService {
     // Hash the password
     const passwordHash = await this.hashPassword(password.getValue());
 
-    // Create a new user with value objects for name
-    const user = new User(email, passwordHash, new FirstName(firstName), new LastName(lastName));
+    // Create a new user with value objects for name and new attributes
+    const user = new User(
+      email,
+      passwordHash,
+      new FirstName(firstName),
+      new LastName(lastName),
+      acceptTerms,
+      receiveNotifications,
+    );
 
     // Assign default role
     const defaultRole = await this.roleRepository.findDefaultRole();

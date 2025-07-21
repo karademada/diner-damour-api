@@ -16,12 +16,16 @@ export class User {
   lastLoginAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  acceptTerms: boolean;
+  receiveNotifications: boolean;
 
   constructor(
     email: Email,
     passwordHash: string,
     firstName: FirstName,
     lastName: LastName,
+    acceptTerms: boolean = false,
+    receiveNotifications: boolean = false,
     id?: string,
   ) {
     this.id = id || uuidv4();
@@ -34,6 +38,8 @@ export class User {
     this.roles = [];
     this.createdAt = new Date();
     this.updatedAt = new Date();
+    this.acceptTerms = acceptTerms;
+    this.receiveNotifications = receiveNotifications;
   }
 
   activate(): void {

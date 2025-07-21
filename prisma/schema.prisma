@@ -21,6 +21,8 @@ model User {
   otpEnabled    Boolean   @default(false)
   otpSecret     String?
   lastLoginAt   DateTime?
+  acceptTerms         Boolean  @default(false)
+  receiveNotifications Boolean @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   

@@ -78,7 +78,7 @@ describe('UserService', () => {
       });
 
       // Act
-      const result = await service.createUser(email, password, firstName, lastName);
+      const result = await service.createUser(email, password, firstName, lastName, true, true);
 
       // Assert
       expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
@@ -115,7 +115,7 @@ describe('UserService', () => {
       });
 
       // Act
-      const result = await service.createUser(email, password, firstName, lastName);
+      const result = await service.createUser(email, password, firstName, lastName, true, true);
 
       // Assert
       expect(roleRepository.findDefaultRole).toHaveBeenCalled();
@@ -133,9 +133,9 @@ describe('UserService', () => {
       userRepository.findByEmail.mockResolvedValue(userFixtures.users.validUser());
 
       // Act & Assert
-      await expect(service.createUser(email, password, firstName, lastName)).rejects.toThrow(
-        EntityAlreadyExistsException,
-      );
+      await expect(
+        service.createUser(email, password, firstName, lastName, true, true),
+      ).rejects.toThrow(EntityAlreadyExistsException);
       expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
       expect(userRepository.create).not.toHaveBeenCalled();
     });
@@ -148,9 +148,9 @@ describe('UserService', () => {
       const lastName = 'Doe';
 
       // Act & Assert
-      await expect(service.createUser(email, password, firstName, lastName)).rejects.toThrow(
-        InvalidValueObjectException,
-      );
+      await expect(
+        service.createUser(email, password, firstName, lastName, true, true),
+      ).rejects.toThrow(InvalidValueObjectException);
       expect(userRepository.findByEmail).not.toHaveBeenCalled();
       expect(userRepository.create).not.toHaveBeenCalled();
     });
@@ -163,9 +163,9 @@ describe('UserService', () => {
       const lastName = 'Doe';
 
       // Act & Assert
-      await expect(service.createUser(email, password, firstName, lastName)).rejects.toThrow(
-        InvalidValueObjectException,
-      );
+      await expect(
+        service.createUser(email, password, firstName, lastName, true, true),
+      ).rejects.toThrow(InvalidValueObjectException);
       expect(userRepository.create).not.toHaveBeenCalled();
     });
   });
