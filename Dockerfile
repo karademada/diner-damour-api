@@ -34,7 +34,7 @@ RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
 
 # Install production dependencies only
-RUN pnpm install --frozen-lockfile --prod
+# RUN pnpm install --frozen-lockfile --prod
 
 # Copy Prisma schema and migrations
 COPY prisma/schema.prisma ./prisma/
@@ -46,8 +46,8 @@ RUN npx prisma generate
 
 # Copy built app, JS seed script, and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/src/infrastructure/i18n/locales ./src/infrastructure/i18n/locales
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/src/infrastructure/i18n/locales ./src/infrastructure/i18n/locales
 
 # Expose port
 EXPOSE 3000
