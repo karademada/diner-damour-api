@@ -22,10 +22,12 @@ RUN npx prisma generate
 RUN pnpm build
 RUN npx tsc prisma/seed.ts --outDir dist/prisma --esModuleInterop --skipLibCheck
 
-# Production stage
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 
 WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache python3 make g++ gcc
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -33,8 +35,9 @@ RUN npm install -g pnpm
 # Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
 
-# Install production dependencies only
-# RUN pnpm install --frozen-lockfile --prod
+# Install production dependencies and rebuild bcrypt
+RUN pnpm install --frozen-lockfile --prod
+RUN pnpm rebuild bcrypt
 
 # Copy Prisma schema and migrations
 COPY prisma/schema.prisma ./prisma/
@@ -46,8 +49,10 @@ RUN npx prisma generate
 
 # Copy built app, JS seed script, and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/src/infrastructure/i18n/locales ./src/infrastructure/i18n/locales
+
+# Remove build dependencies to reduce image size
+RUN apk del python3 make g++ gcc
 
 # Expose port
 EXPOSE 3000
@@ -55,8 +60,7 @@ EXPOSE 3000
 # Set NODE_ENV to production
 ENV NODE_ENV=production
 
-# Install build dependencies
-RUN apk add --no-cache python3 make g++
+
 
 # Run migrations, compiled seed script, and start the app
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/prisma/seed.js && node dist/src/main.js"]
