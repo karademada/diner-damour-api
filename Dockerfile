@@ -5,11 +5,11 @@ WORKDIR /app
 # Install build dependencies for native modules
 RUN apk add --no-cache python3 make g++ gcc libc6-compat
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+# Copy package.json
+COPY package.json ./
 
 # Install all dependencies (including dev dependencies for build)
-RUN npm ci
+RUN npm install
 
 # Copy the rest of the app
 COPY . .
@@ -29,11 +29,11 @@ WORKDIR /app
 # Install build dependencies for native modules (keep them for runtime)
 RUN apk add --no-cache python3 make g++ gcc libc6-compat
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+# Copy package.json
+COPY package.json ./
 
 # Install production dependencies only
-RUN npm ci --only=production
+RUN npm install --omit=dev
 
 # Copy Prisma schema and migrations
 COPY prisma/schema.prisma ./prisma/
