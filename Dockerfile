@@ -25,26 +25,32 @@ RUN npx prisma generate
 RUN pnpm build
 RUN npx tsc prisma/seed.ts --outDir dist/prisma --esModuleInterop --skipLibCheck
 
-# Clean up dev dependencies but keep production ones with native bindings
-RUN pnpm prune --prod
-
 FROM node:20-alpine AS production
 
 WORKDIR /app
 
-# Install minimal runtime dependencies
-RUN apk add --no-cache libc6-compat
+# Install build dependencies for native modules (keep them for runtime)
+RUN apk add --no-cache python3 make g++ gcc libc6-compat
 
-# Copy package.json for reference
-COPY package.json ./
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy package.json and pnpm-lock.yaml
+COPY package.json pnpm-lock.yaml ./
+
+# Install production dependencies and ensure native modules are built properly
+RUN pnpm install --frozen-lockfile --prod
 
 # Copy Prisma schema and migrations
 COPY prisma/schema.prisma ./prisma/
 COPY prisma/migrations ./prisma/migrations/
 
-# Copy built app, node_modules (with native bindings), and i18n locales from builder stage
+# Generate Prisma client in production stage
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+RUN npx prisma generate
+
+# Copy built app and i18n locales from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/src/infrastructure/i18n/locales ./src/infrastructure/i18n/locales
 
 # Expose port
